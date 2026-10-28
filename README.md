@@ -1,104 +1,75 @@
-# Günlük Takip · Daily Tracker
+# Günlük Takip / Daily Tracker
 
-**Offline-first personal tracker for Android with a Go/Wails desktop companion.**
-Sleep, agenda tasks, daily habits, ideas and shopping lists — stored on your device, synced over your own network, no hosted backend.
+[Türkçe](#türkçe) | [English](#english)
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
-[![Room](https://img.shields.io/badge/Room-SQLite-3DDC84?logo=android&logoColor=white)](https://developer.android.com/training/data-storage/room)
-[![Go](https://img.shields.io/badge/Go-Wails%20v2-00ADD8?logo=go&logoColor=white)](https://wails.io)
-[![Platform](https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white)](#requirements)
-[![Offline first](https://img.shields.io/badge/offline--first-no%20cloud-2ea44f)](#privacy-and-sync)
+![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?logo=kotlin&logoColor=white)
+![Android](https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white)
+![Offline](https://img.shields.io/badge/Offline-first-2ea44f)
 
-![Sleep tracking screen](docs/screenshots/sleep-tracking.png)
+## Ekran görüntüleri / Screenshots
 
-## Features
+| Android (Uyku / Sleep) | Masaüstü / Desktop |
+| --- | --- |
+| ![Android sleep screen](docs/screenshots/sleep-tracking.png) | ![Desktop agenda](docs/screenshots/agenda-desktop.png) |
 
-- **Sleep tracking** — one tap to start, one tap to wake up; live timer, history and averages.
-- **Agenda** — dated tasks, notes, general goals, subtasks with progress, per-task timers, daily counters and streaks, calendar and a notebook view.
-- **Task priority** — swipe a task row left/right to lower or raise its priority; high-priority tasks float to the top.
-- **Daily repetition** — `Yaptım` increments the selected day, `−` undoes it; every day starts at zero.
-- **Shopping list** — short/long-term lists, purchase check-off, and day-by-day grouping (`Bugün`, `Dün`, date).
-- **Ideas** — undated notes kept separate from the agenda.
-- **Stats** — period summaries and goal progress.
-- **Local encrypted sync** — Android ↔ desktop over LAN with a pairing code; record-level last-write-wins.
-- **MCP bridge** — optional stdio MCP server so local AI clients can read/write records through an explicit, revocable app key.
-- **No accounts, no ads, no telemetry, no hosted backend.**
+## Türkçe
 
-## Screenshots
+**Günlük Takip**, uyku düzenini, görevlerini, alışkanlıklarını, fikirlerini ve alışveriş listelerini tek yerden yönetebileceğin, internetsiz çalışan bir Android uygulamasıdır.
 
-| Sleep | Agenda | Desktop sync |
-| --- | --- | --- |
-| ![](docs/screenshots/sleep-tracking.png) | ![](docs/screenshots/agenda-desktop.png) | QR pairing from the desktop companion (not pictured for privacy) |
+### Özellikler
 
-## Architecture
+- **Uyku takibi:** Tek dokunuşla başlat/bitir, süreleri ve geçmişi gör.
+- **Ajanda:** Görevler, alt görevler, notlar, hedefler ve hatırlatıcılar.
+- **Görev önceliği:** Sağa veya sola kaydırarak önceliği değiştir.
+- **Alışkanlıklar:** Günlük tekrarları ve tamamlanan günleri takip et.
+- **Fikir ve alışveriş listeleri:** Ayrı bölümlerde kayıt tut.
+- **İstatistikler:** Uyku ve hedef ilerlemesini incele.
+- **İsteğe bağlı bağlantılar:** Go/Wails masaüstü uygulamasıyla yerel ağda eşitleme ve yerel MCP köprüsü.
 
-```text
-:app
-  ├── :feature:sleep ─────┐
-  ├── :feature:agenda ────┤
-  ├── :feature:stats ─────┼──► :data ──► Room (SQLite)
-  ├── :feature:ideas ─────┤       │
-  ├── :feature:shopping ──┘       └──► :core (models, theme, shared UI)
-  └── :feature:settings
+### Kurulum
 
-desktop-wails/  Go + Wails v2 companion, encrypted LAN sync peer
-mcp-bridge/     Go stdio MCP server (optional)
-sync-protocol/  Shared Java sync packet + crypto
-```
-
-- Feature modules never depend on each other; UI only sees repository APIs and core models.
-- Room is the single source of truth; schemas are versioned under `data/schemas/` and every change ships a migration.
-- Sync uses record-level last-write-wins with tombstones; device-local state (running timers, task priorities) is preserved locally.
-
-## Requirements
-
-- Android 8.0 (API 26) or newer
-- Android Studio with the Gradle JDK (see `gradle.properties`)
-- For the desktop companion: Go, Node.js, Wails v2 and WebView2 (Windows)
-
-## Build
-
-### Android
+Projeyi Android Studio ile açıp aşağıdaki komutla APK oluşturabilirsin:
 
 ```powershell
-.\gradlew.bat test
 .\gradlew.bat :app:assembleOptimized
 ```
 
-The signed-by-debug-key optimized APK lands in `app/build/outputs/apk/optimized/app-optimized.apk`.
-`local.properties` (SDK path) is intentionally not committed.
+Çıktı: `app/build/outputs/apk/optimized/app-optimized.apk` (debug anahtarıyla imzalanır). Masaüstü kodu `desktop-wails/`, isteğe bağlı MCP köprüsü `mcp-bridge/` klasöründedir.
 
-### Desktop companion
+### Gizlilik
+
+Üyelik, reklam, takip sistemi veya zorunlu bulut sunucusu yoktur. Veriler cihazda saklanır. Yerel ağ eşitlemesi ve MCP erişimi isteğe bağlıdır. Yayımlanan ekran görüntülerinden kişisel bilgiler ve metadata kaldırılmıştır.
+
+## English
+
+**Daily Tracker** is an offline-first Android app for managing sleep, tasks, habits, ideas and shopping lists in one place.
+
+### Features
+
+- **Sleep tracking:** Start/stop with one tap; view sleep duration and history.
+- **Agenda:** Tasks, subtasks, notes, goals and reminders.
+- **Task priority:** Swipe left or right to change priority.
+- **Habits:** Track daily repetitions and completed days.
+- **Ideas and shopping:** Keep separate lists for each.
+- **Statistics:** Review sleep summaries and goal progress.
+- **Optional integrations:** Local-network sync with the Go/Wails desktop companion and a local MCP bridge.
+
+### Build
+
+Open the project in Android Studio, then build the APK with:
 
 ```powershell
-cd desktop-wails
-go test ./...
-cd frontend
-npm ci
-npm test
-npm run build
-cd ..
-wails build -skipbindings -s
+.\gradlew.bat :app:assembleOptimized
 ```
 
-### MCP bridge (optional)
+Output: `app/build/outputs/apk/optimized/app-optimized.apk` (signed with a debug key). Desktop sources are in `desktop-wails/`; the optional MCP bridge is in `mcp-bridge/`.
 
-See [mcp-bridge/README.md](mcp-bridge/README.md). The bridge is off by default, requires an explicit access key, and never exposes health or pairing secrets.
+### Privacy
 
-## Privacy and sync
+No account, ads, analytics or mandatory cloud server. Data stays on your device. LAN sync and MCP access are opt-in. Published screenshots have been reviewed to remove personal information and metadata.
 
-- Real device backups, databases, pairing files, raw screenshots, local settings and build outputs are **excluded from Git**. Published screenshots are reviewed and stripped of metadata.
-- Nothing leaves your devices unless you start a LAN sync or explicitly grant MCP access on the phone.
-- Daily counters stay local; only the aggregate completed-day count is synced.
+---
 
-## Project docs
+**Teknolojiler / Stack:** Kotlin, Jetpack Compose, Material 3, Room, Go, Wails.
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) — module rules, data strategy, UI state flow
-- [PRODUCT_PROMPT.md](PRODUCT_PROMPT.md) — original product brief
-- [docs/PC_MOBILE_SYNC_PLAN.md](docs/PC_MOBILE_SYNC_PLAN.md) — sync protocol plan
-- [docs/MCP_RESEARCH_AND_PLAN.md](docs/MCP_RESEARCH_AND_PLAN.md) — MCP bridge design notes
-
-## Status
-
-Personal project under active development. Interfaces, sync protocol and database schemas may change between versions; migrations are provided for data that already exists on devices.
+**Durum / Status:** Aktif geliştirme aşamasında / Under active development.
