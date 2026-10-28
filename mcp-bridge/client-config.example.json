@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "gunluk_takip": {
+      "command": "C:\\path\\to\\repo\\mcp-bridge\\gunluk-takip-mcp.exe",
+      "args": ["--config", "%APPDATA%\\GunlukTakipMcp\\emulator.json"]
+    }
+  }
+}

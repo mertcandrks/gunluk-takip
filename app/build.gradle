@@ -1,0 +1,87 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.compose)
+}
+
+android {
+    namespace = "com.uykutakip.app"
+    compileSdk = 37
+
+    defaultConfig {
+        applicationId = "com.uykutakip.app"
+        minSdk = 26
+        targetSdk = 37
+        versionCode = 34
+        versionName = "5.8"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    sourceSets.main.assets.srcDir(layout.buildDirectory.dir('generated/mcpAssets').get().asFile)
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        optimized {
+            initWith release
+            // Local performance build: preserves updates over the installed debug APK.
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+        }
+        benchmark {
+            initWith release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+        }
+    }
+}
+
+tasks.register('syncMcpContract', Copy) {
+    from('../mcp-bridge/contract.json')
+    into(layout.buildDirectory.dir('generated/mcpAssets'))
+    rename { 'mcp_contract.json' }
+}
+tasks.named('preBuild') { dependsOn('syncMcpContract') }
+
+dependencies {
+    implementation project(":core")
+    implementation project(":data")
+    implementation project(":sync-protocol")
+    implementation project(":feature:sleep")
+    implementation project(":feature:nutrition")
+    implementation project(":feature:hydration")
+    implementation project(":feature:agenda")
+    implementation project(":feature:private-tracking")
+    implementation project(":feature:stats")
+    implementation project(":feature:settings")
+    implementation project(":feature:ideas")
+    implementation project(":feature:shopping")
+    implementation platform(libs.compose.bom)
+    implementation libs.activity.compose
+    implementation libs.compose.ui
+    implementation libs.compose.material3
+    implementation libs.compose.material.icons
+    implementation libs.navigation.compose
+    implementation libs.lifecycle.runtime.compose
+    implementation libs.coroutines.android
+    implementation libs.work.runtime
+    implementation libs.camera.core
+    implementation libs.camera.camera2
+    implementation libs.camera.lifecycle
+    implementation libs.camera.view
+    implementation libs.mlkit.barcode.scanning
+    testImplementation libs.junit
+    debugImplementation libs.compose.ui.tooling
+}

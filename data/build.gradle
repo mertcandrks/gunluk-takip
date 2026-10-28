@@ -1,0 +1,30 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
+}
+
+android {
+    namespace = "com.uykutakip.data"
+    compileSdk = 37
+
+    defaultConfig { minSdk = 26 }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildTypes { benchmark { initWith release } }
+}
+
+dependencies {
+    api project(":core")
+    implementation project(":sync-protocol")
+    implementation libs.room.runtime
+    implementation libs.sqlite.bundled
+    implementation libs.coroutines.android
+    ksp libs.room.compiler
+    testImplementation libs.junit
+}
+
+room3 { schemaDirectory "$projectDir/schemas" }

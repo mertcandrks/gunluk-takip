@@ -1,0 +1,10 @@
+appId: com.uykutakip.app
+---
+- launchApp:
+    clearState: false
+- assertVisible: "GÜNLÜK TAKİP"
+- tapOn: "Ajanda"
+- assertVisible: "Ajanda"
+- tapOn: "Hazır görevler"
+- assertVisible: "Görev kitaplığı"
+- tapOn: "Kapat"

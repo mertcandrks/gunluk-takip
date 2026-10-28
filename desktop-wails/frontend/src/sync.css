@@ -1,0 +1,51 @@
+.copy-row select {
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f4f7fb;
+  font: inherit;
+}
+
+.copy-row select option {
+  background: #182433;
+  color: #f4f7fb;
+}
+
+.qr-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #aab8c8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.qr-heading svg {
+  width: 18px;
+  color: #aa8dff;
+}
+
+.qr-frame {
+  display: grid;
+  place-items: center;
+  min-height: 216px;
+  padding: 8px;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.qr-frame canvas {
+  display: block;
+  width: 200px;
+  height: 200px;
+}
+
+.qr-frame p {
+  margin: 0;
+  color: #4c2630;
+  font-size: 12px;
+}

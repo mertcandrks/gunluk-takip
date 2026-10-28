@@ -1,0 +1,18 @@
+appId: com.uykutakip.app
+---
+- launchApp:
+    clearState: false
+- tapOn: "Ayarlar"
+- assertVisible: "Uyku hedefi"
+- assertVisible: "Hatırlatıcılar"
+- tapOn: "Yatma saati.*"
+- assertVisible: "Hatırlatıcı saati"
+- tapOn: "Vazgeç"
+- tapOn: "Loglar ve tanılama"
+- assertVisible: "JSON dışa aktar"
+- back
+- tapOn: "Geri"
+- tapOn: "İstatistik"
+- assertVisible: "Dönem özeti"
+- assertNotVisible: "Hatırlatıcılar"
+- assertNotVisible: "PC ile senkronize et"

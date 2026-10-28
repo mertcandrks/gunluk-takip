@@ -1,0 +1,33 @@
+plugins {
+    alias(libs.plugins.android.test)
+}
+
+android {
+    namespace = "com.uykutakip.macrobenchmark"
+    compileSdk = 37
+    targetProjectPath = ":app"
+    experimentalProperties["android.experimental.self-instrumenting"] = true
+
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 37
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        benchmark {
+            initWith debug
+        }
+    }
+}
+
+dependencies {
+    implementation libs.benchmark.macro.junit4
+    implementation libs.uiautomator
+    implementation libs.androidx.test.junit
+}
